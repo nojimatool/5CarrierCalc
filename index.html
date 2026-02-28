@@ -625,6 +625,16 @@
     font-weight:900;
     outline:none;
   }
+  /* ✅ラベル候補プルダウン */
+  .eSelect{
+    width:100%;
+    padding:12px 12px;
+    border:1px solid #d0d5dd;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:900;
+    background:#fff;
+  }
   .eActions{
     padding:12px 14px;
     display:flex;
@@ -780,6 +790,11 @@
     </div>
     <div class="eBody">
       <div class="eHint" id="editHint">ここに項目名を入力して「保存」。</div>
+
+      <select class="eSelect" id="editSelect">
+        <option value="">▼ よく使う項目から選ぶ（任意）</option>
+      </select>
+      
       <input class="eInput" id="editInput" type="text" placeholder="例：頭金" />
     </div>
     <div class="eActions">
@@ -792,7 +807,7 @@
 
 <script>
 (() => {
-  const KEY = "5carrier_calc_v2";
+  const KEY = "5carrier_calc_v3";
   const TAB_COUNT = 5;
   const COLS = 3;
   const DEFAULT_TAB_NAMES = ["Docomo","AU","Softbank","Ymobile","UQmobile"];
@@ -838,6 +853,42 @@
   const editInput = $("editInput");
   const editTitle = $("editTitle");
   const editHint  = $("editHint");
+  // ✅よく使う項目（自由に増減OK）
+  const COMMON_LABELS = [
+    "頭金",
+    "データ移行",
+    "SIMのみ",
+  　"光同時",
+  　"複数台",
+  　"家電セット",
+  　"クレジットカード申し込み",
+  　"電気申し込み",
+  　"値引き",
+    "利用料金",
+    "補償",
+    "バッテリー補償",
+    "データ復旧補償",
+    "ノートン",
+  　"端末買取"
+  ];
+  const editSelect = $("editSelect");
+  // プルダウン初期化
+  function initLabelSelect(){
+    if(!editSelect) return;
+    editSelect.innerHTML = `<option value="">▼ よく使う項目から選ぶ（任意）</option>`;
+    COMMON_LABELS.forEach(v=>{
+      const op = document.createElement("option");
+      op.value = v;
+      op.textContent = v;
+      editSelect.appendChild(op);
+    });
+  }
+  // 選択したら入力欄に反映
+  editSelect.addEventListener("change", ()=>{
+    if(!editSelect.value) return;
+    editInput.value = editSelect.value;
+    editInput.focus({preventScroll:true});
+  });
   let editingTarget = null; // {c,r}
 
   // ✅編集中フラグ：ラベル編集をモーダルに寄せるので「行選択の誤作動」防止に使用
@@ -1291,7 +1342,7 @@
     editTitle.textContent = `項目名を編集（列${c+1} / ${r+1}行）`;
     editHint.textContent  = "入力して「保存」。";
     editInput.value = cur;
-
+    initLabelSelect();
     editBackdrop.style.display = "flex";
 
     // iOS対策：表示直後は少し遅らせてフォーカス

@@ -807,7 +807,7 @@
 
 <script>
 (() => {
-  const KEY = "5carrier_calc_v3";
+  const KEY = "5carrier_calc_v4";
   const TAB_COUNT = 5;
   const COLS = 3;
   const DEFAULT_TAB_NAMES = ["Docomo","AU","Softbank","Ymobile","UQmobile"];
@@ -858,18 +858,18 @@
     "頭金",
     "データ移行",
     "SIMのみ",
-  　"光同時",
-  　"複数台",
-  　"家電セット",
-  　"クレジットカード申し込み",
-  　"電気申し込み",
-  　"値引き",
+    "光同時",
+    "複数台",
+    "家電セット",
+    "クレジットカード申し込み",
+    "電気申し込み",
+    "値引き",
     "利用料金",
     "補償",
     "バッテリー補償",
     "データ復旧補償",
     "ノートン",
-  　"端末買取"
+    "端末買取"
   ];
   const editSelect = $("editSelect");
   // プルダウン初期化
@@ -885,10 +885,14 @@
   }
   // 選択したら入力欄に反映
   editSelect.addEventListener("change", ()=>{
-    if(!editSelect.value) return;
-    editInput.value = editSelect.value;
-    editInput.focus({preventScroll:true});
-  });
+  if(!editSelect.value) return;
+
+  // 入力欄へ反映
+  editInput.value = editSelect.value;
+
+  // 🔥自動保存＆モーダル閉じる
+  commitLabel();
+});
   let editingTarget = null; // {c,r}
 
   // ✅編集中フラグ：ラベル編集をモーダルに寄せるので「行選択の誤作動」防止に使用
@@ -1364,6 +1368,29 @@
     isEditingLabel = false;
     renderLists();
   }
+
+  function commitLabel(){
+  if(!editingTarget) return;
+
+  const c = editingTarget.c;
+  const r = editingTarget.r;
+
+  const tab = state.tabs[activeTab];
+  const col = tab.cols[c];
+  normalizeRows(col, getRows(c));
+
+  const before = { ...col.rows[r] };
+  const afterLabel = (editInput.value || "").trim();
+  const after = { ...before, label: afterLabel };
+
+  if(before.label !== after.label){
+    pushHistory({tab:activeTab, col:c, row:r, prev:before, next:after});
+    col.rows[r] = after;
+    save();
+  }
+
+  closeLabelModal();
+}
 
   function commitLabel(){
     if(!editingTarget) return;

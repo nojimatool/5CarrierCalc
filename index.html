@@ -867,7 +867,12 @@
           rows: Array.from({length:DEFAULT_ROWS[c]}, ()=>({label:"", kind:"num", value:null}))
         }))
       })),
-      links:Array.from({length:4}, ()=>({label:"", url:""})),
+      links:[
+        { label:"料金", url:"https://script.google.com/macros/s/AKfycbySCFOft86JWkUpRpbxZA7duV9ZSe4RcDxpezD8GpGK0Q3pP1SwPOipxi68XXvL9tlS/exec" },
+        { label:"PDF", url:"https://docs.google.com/forms/d/e/1FAIpQLSc6lZ2d9LPCY_48-EtVCJM8tJ7IRDL5sJswRI-5nTwczGO7SQ/viewform?pli=1" },
+        { label:"", url:"" },
+        { label:"", url:"" }
+      ],)),
       savedAt:new Date().toISOString()
     };
   }

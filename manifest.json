@@ -1,0 +1,15 @@
+{
+  "name": "三連電卓",
+  "short_name": "三連電卓",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#082b66",
+  "theme_color": "#082b66",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

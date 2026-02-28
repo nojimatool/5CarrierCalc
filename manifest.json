@@ -1,6 +1,6 @@
 {
-  "name": "三連電卓",
-  "short_name": "三連電卓",
+  "name": "5キャリア電卓",
+  "short_name": "5キャリア電卓",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#082b66",

@@ -795,6 +795,7 @@
   const KEY = "sanren_calc_2";
   const TAB_COUNT = 5;
   const COLS = 3;
+  const DEFAULT_TAB_NAMES = ["Docomo","AU","Softbank","Ymobile","UQmobile"];
 
   const DEFAULT_ROWS = [15,15,15];
   const MAX_ROWS = 40;
@@ -861,7 +862,7 @@
       activeTab:0, activeCol:0, activeRow:0,
       rowsByCol:[...DEFAULT_ROWS],
       tabs:Array.from({length:TAB_COUNT}, (_,i)=>({
-        name:`List${i+1}`,
+        name: DEFAULT_TAB_NAMES[i] || `List${i+1}`,
         cols:Array.from({length:COLS}, (__,c)=>({
           rows: Array.from({length:DEFAULT_ROWS[c]}, ()=>({label:"", kind:"num", value:null}))
         }))
